@@ -9,7 +9,7 @@ on:
       working-directory:
         required: false
         type: string
-        default: '.'
+        default: "."
       image-tag:
         required: true
         type: string
@@ -31,7 +31,7 @@ jobs:
     environment: main
     outputs:
       app_url: ${{ steps.set_app_url.outputs.app_url }}
-      app_ip:  ${{ steps.set_app_ip.outputs.app_ip }}
+      app_ip: ${{ steps.set_app_ip.outputs.app_ip }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -41,6 +41,12 @@ jobs:
 
       # TODO
       # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+
       # Deploy ECS Cluster using templates/cluster.yaml
       # Update ECS Task Definition with image tag
       # Deploy new ECS Task
