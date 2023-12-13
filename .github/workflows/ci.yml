@@ -14,13 +14,19 @@ jobs:
       contents: read
     environment: main
     outputs:
-      image-tag: ${{ steps.set-image-tag.outputs.IMAGE_TAG }} 
+      image-tag: ${{ steps.set-image-tag.outputs.IMAGE_TAG }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
       # TODO
       # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+
       # CloudFormation Lint
       # CloudFormation Static Analysis
       # Build docker images
